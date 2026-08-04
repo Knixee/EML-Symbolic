@@ -6,8 +6,7 @@
 
 *One gate. Every elementary function. A neural network that learns equations, not just numbers.*
 
-[![Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FKnixee%2FEML-Symbolic%2Fmain%2Fpyproject.toml&query=%24.project.version&label=version)](https://github.com/Knixee/EML-Symbolic/blob/main/pyproject.toml)
-[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
+[![PyPI](https://img.shields.io/pypi/v/eml-symbolic?label=pypi&color=blue)](https://pypi.org/project/eml-symbolic/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![scikit-learn API](https://img.shields.io/badge/scikit--learn-compatible-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
