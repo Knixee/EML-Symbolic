@@ -8,6 +8,7 @@ version = "1.13.3"
 authors = [
   { name="Egor Kantserov", email="kantserovegor@gmail.com" },
 ]
+license = {text = "Apache-2.0"}
 description = "Differentiable Symbolic Regressor based on Exponent-Minus-Log (EML) architecture"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -24,9 +25,17 @@ dependencies = [
     "sympy>=1.10.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/Knixee/EML-Symbolic"
+Repository = "https://github.com/Knixee/EML-Symbolic.git"
+Issues = "https://github.com/Knixee/EML-Symbolic/issues"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0.0",
     "build",
     "twine",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
