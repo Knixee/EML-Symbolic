@@ -8,13 +8,12 @@ version = "1.13.3"
 authors = [
   { name="Egor Kantserov", email="kantserovegor@gmail.com" },
 ]
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
 description = "Differentiable Symbolic Regressor based on Exponent-Minus-Log (EML) architecture"
 readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
