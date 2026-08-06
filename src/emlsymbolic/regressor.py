@@ -2,7 +2,6 @@ import numpy as np
 from typing import List, Optional, Tuple, Union
 import time
 import warnings
-import logging
 
 import torch
 import torch.nn as nn
@@ -12,8 +11,6 @@ from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 
 from .network import _EMLInternalNetwork
-
-logger = logging.getLogger(__name__)
 
 class EMLSymbolicRegressor(BaseEstimator, RegressorMixin):
     """
@@ -62,6 +59,9 @@ class EMLSymbolicRegressor(BaseEstimator, RegressorMixin):
         self.loss_fn = loss_fn
         self.random_state = random_state
         self.verbose = verbose
+    
+    def _log_print(self, msg: str):
+        print(msg, flush=True)
 
     def fit(
         self, 
@@ -166,12 +166,12 @@ class EMLSymbolicRegressor(BaseEstimator, RegressorMixin):
             log_frequency = self.verbose if self.verbose > 0 else None
 
         if log_frequency:
-            logger.info("Training on device=%s, epochs=%d", self.device_, self.epochs)
+            self._log_print(f"Training on device={self.device_}, epochs={self.epochs}")
             header = f"{'epoch':>8} | {'phase':<22} | {'loss':>14}"
             if has_val:
                 header += f" | {'val_loss':>14}"
             header += f" | {'eta':>10}"
-            logger.info(header)
+            self._log_print(header)
 
         for epoch in range(self.epochs):
             step_start = time.time()
@@ -258,11 +258,11 @@ class EMLSymbolicRegressor(BaseEstimator, RegressorMixin):
 
             if not torch.isfinite(total_loss):
                 nonfinite_streak += 1
-                logger.warning(
-                    "Non-finite loss encountered at epoch %d (streak=%d); "
+                warnings.warn(
+                    f"Non-finite loss encountered at epoch {epoch} (streak={nonfinite_streak}); "
                     "skipping optimizer step.",
-                    epoch,
-                    nonfinite_streak,
+                    UserWarning,
+                    stacklevel=2,
                 )
                 optimizer.zero_grad()
                 if nonfinite_streak >= max_nonfinite_streak:
@@ -312,7 +312,7 @@ class EMLSymbolicRegressor(BaseEstimator, RegressorMixin):
                     row += f" | {val_loss:>14.7f}"
                 row += f" | {eta_str:>10}"
 
-                logger.info(row)
+                self._log_print(row)
 
         if self.fixed_structure_ is None:
             self.fixed_structure_ = []
@@ -326,11 +326,7 @@ class EMLSymbolicRegressor(BaseEstimator, RegressorMixin):
 
         if log_frequency:
             elapsed = time.time() - start_time
-            logger.info(
-                "Training finished in %.2fs, final training loss=%.7f",
-                elapsed,
-                last_loss_val,
-            )
+            self._log_print(f"Training finished in {elapsed:.2f}s, final training loss={last_loss_val:.7f}")
 
         self.is_fitted_ = True
         return self
@@ -437,6 +433,10 @@ class EMLSymbolicRegressor(BaseEstimator, RegressorMixin):
             simplified_expr = sp.simplify(parsed_expr)
             simplified_expr = sp.trigsimp(simplified_expr)
             return str(simplified_expr)
-        except Exception:
-            logger.debug("SymPy simplification failed; returning raw expression.", exc_info=True)
+        except Exception as e:
+            warnings.warn(
+                f"SymPy simplification failed ({type(e).__name__}: {e}); returning raw expression.",
+                UserWarning,
+                stacklevel=2,
+            )
             return raw_eml_string
