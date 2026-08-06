@@ -89,6 +89,10 @@ Requires Python 3.9+, PyTorch, scikit-learn, NumPy, and SymPy (for equation simp
 
 ## Quick start
 
+```bash
+pip install eml-symbolic
+```
+
 ```python
 import numpy as np
 from sklearn.model_selection import train_test_split
