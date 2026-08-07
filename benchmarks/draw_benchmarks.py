@@ -1,7 +1,8 @@
 import numpy as np
+from pathlib import Path
 import matplotlib.pyplot as plt
 
-def draw_benchmark_results(X_test, y_true, y_pred, title_name):
+def draw_benchmark_results(X_test, y_true, y_pred, title_name, bench_num):
     fig, ax = plt.subplots(figsize=(7, 5))
     
     if X_test.shape[1] == 1:
@@ -18,9 +19,13 @@ def draw_benchmark_results(X_test, y_true, y_pred, title_name):
         ax.set_xlabel("True Values")
         ax.set_ylabel("Predictions")
 
-    ax.set_title(f"Fit Quality: {title_name}")
+    ax.set_title(f"function: {title_name}")
     ax.grid(True, linestyle=":", alpha=0.6)
     ax.legend()
+    
+    output_dir = Path(__file__).parent / "docs"
+    save_path = output_dir / f"benchmark_{bench_num}.png"
+    plt.savefig(save_path, dpi=300, bbox_inches="tight")
 
     plt.tight_layout()
     plt.show()

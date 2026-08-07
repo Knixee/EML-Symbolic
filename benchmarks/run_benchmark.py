@@ -3,10 +3,14 @@ from sklearn.metrics import mean_squared_error, r2_score
 from emlsymbolic import EMLSymbolicRegressor
 
 def run_benchmark(X_train, X_test, y_train, y_test, params: dict) -> np.ndarray:
+    
+    if not params:
+        raise ValueError("The 'params' dictionary is empty.")
+    
     model = EMLSymbolicRegressor(
         **params,
         random_state=42,
-        verbose=100
+        verbose=500
     )
     
     model.fit(X_train, y_train, eval_set=(X_test, y_test))
